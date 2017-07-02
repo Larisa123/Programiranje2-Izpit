@@ -4,7 +4,8 @@ import java.util.*;
 public class branjeDatotek {
 
 	public static void main(String[] args) throws IOException {
-		preberiDatoteko("mapa/test.txt"); //mapa na istem nivoju kot src
+		preberiDatoteko("mapa/vhod4.txt"); //mapa na istem nivoju kot src
+		pisiVDatoteko("mapa/izpis.txt", "Lara je že malo lačna in gre jest");
 
 	}
 	
@@ -23,8 +24,9 @@ public class branjeDatotek {
 		fileReader.close();
 	}
 	
-	public static void zapisiVDatoteko() {
-		
+	public static void pisiVDatoteko(String imeDatoteke, String kajZapisati) throws IOException{ 
+	    PrintWriter writer = new PrintWriter(imeDatoteke, "UTF-8");
+	    writer.println(kajZapisati);
+	    writer.close();
 	}
-
 }
