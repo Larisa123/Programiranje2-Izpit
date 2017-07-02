@@ -1,0 +1,7 @@
+
+n = 0
+c = 1
+while n < meja:
+yield int(c)
+n = n+1
+c = c * 2 * (2*n-1) / (n+1)
