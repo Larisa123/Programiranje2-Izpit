@@ -4,23 +4,27 @@ import java.util.*;
 public class branjeDatotek {
 
 	public static void main(String[] args) throws IOException {
-		int stevilo = preberiDatoteko("/vhod4.txt");
-		System.out.print(stevilo);
+		preberiDatoteko("mapa/test.txt"); //mapa na istem nivoju kot src
 
 	}
 	
-	public static int preberiDatoteko(String imeDatoteke) throws IOException {
+	public static void preberiDatoteko(String imeDatoteke) throws IOException {
 		FileReader fileReader = new FileReader(imeDatoteke);
 		BufferedReader br = new BufferedReader(fileReader);
 		
-		int stevec = 0;
-		while (br.readLine() != null) {
+		while (br.ready()) {
 			String line = br.readLine();
-			System.out.println(line);
+			String[] strArray = line.split(" ");
+			for (String string: strArray) { //blablabla
+				continue;
+			}
 		}
 		
 		fileReader.close();
-		return stevec;
+	}
+	
+	public static void zapisiVDatoteko() {
+		
 	}
 
 }
