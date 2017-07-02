@@ -1,0 +1,114 @@
+# PYTHON OSNOVE:
+class Razred:
+    def __init__(self, arg):
+        self.arg = arg
+
+    def __str__(self):
+        return "naprimer st/im"
+
+    def __repr__(self):
+        return "Ulomek(st, im)"
+
+    # metode __add__, __sub__, __mul__, __truediv__,...
+    # lt less than vrne boolean, eq vrne True če sta enaki
+
+
+#branje datotek:
+    data =  "TextFiles/data.txt"
+    with open(data, "r") as file:
+        lines = [line.strip() for line in file]
+        for line in lines:
+            besede_v_vrstici = line.split(";")
+        #...
+
+#branje in pisanje naenkrat:
+    with open(data, "r") as input_file, open(output_data, "w") as output_file:
+        pass
+
+# uporabne funkcije:
+
+# PRASTEVILA:
+def jePrastevilo(n):
+    if n == 2: return True # je praštevilo
+    if n == 1 or n%2 == 0: return False
+    i = 3
+    meja = n**0.5
+    while i <= meja:
+        if n % i == 0: return False
+        i += 2 # ker smo deljivost s 2 preverili, lahko spuščamo sode
+    return True # če ni bilo deljivo s ničim, je pa praštevilo
+
+def poisciNtoZacniZktim(n, k, ktoStevilo):
+    if n == 1: return 2 # prvo praštevilo je 2
+    if n == 2: return 3
+    prastevil = k-1 # štejemo, koliko jih je
+    i = ktoStevilo
+    while prastevil < n:
+        if jePrastevilo(i): prastevil += 1 #štejemo jih
+        i += 2
+    return i-2 # ker smo na koncu še povečali za 2
+
+def prvihNPrastevil(n):
+    prastevila = [2, 3] # ta seznam bo shranjeval praštevila do n-tega
+    prejsnje = 3 # tukaj shranjujemo zadnje prastevilo
+    for i in range(3, n+1): # interval [3, n] (vključno z obema)
+        sedanje = poisciNtoZacniZktim(i, i-1, prejsnje) # funkcija, ki smo jo že razložili
+        prastevila.append(sedanje) # dodamo novo praštevilo v seznam
+        prejsnje = sedanje #ker bomo zvečali i, bo zadnje praštevilo postalo kar to praštevilo
+    return prastevila
+
+def preveri(i, j):
+    if not jePrastevilo(int(str(i) + str(j))): return False # ni praštevilo
+    if not jePrastevilo(int(str(j) + str(i))): return False
+    else: return True # do sem pridemo samo če sta zlepka praštevilo
+
+def skupniDelitelj(a, b):
+    if b == 0: return a
+    return skupniDelitelj(b, a % b) # po evklidovem algoritmu
+
+#iz druge datoteke:
+
+def jePrastevilo(n):
+    if n == 2: return True # je praštevilo
+    if n == 1 or n%2 == 0: return False # 1 in večkratniki 2 niso praštevila
+    i = 3 # začetni indeks - primer n = 2 smo že preverili
+    meja = n**0.5
+    while i <= meja:
+        if n % i == 0: return False # če je deljivo s katerim številom, ni praštevilo
+        i += 2 # ker smo deljivost s 2 preverili, lahko izpuščamo sode
+    return True # če ni bilo deljivo s nobenim številom, je pa praštevilo
+
+def ntoPrastevilo(n):
+    if n == 0: return  #samo da se izognemo morebitnim problemom, če je n slučajno 0
+    if n == 1: return 2 #ker začnemo iskati z 3, bi drugače izpustili ta primer
+    prastevil = 1 # dvojko že imamo not
+    i = 3 # spet začnemo pri 3
+    while prastevil < n:
+        if jePrastevilo(i):
+            prastevil += 1 #štejemo, koliko jih že je
+        i += 2 #večkratniki števila 2 ne morejo biti praštevila
+    return i-2 # na koncu smo še enkrat povečali i, zato ga sedaj moramo zmanjšati
+
+def prvihNprastevil(n):
+    return [ntoPrastevilo(i) for i in range(1, n+1)] #tu štejemo z indeksom od 1, ne 0
+
+
+# generatorji, iteratorji:
+def stevke_od_zadi(n):
+    for stevka in reversed(str(n)):
+        yield int(stevka)
+
+class Izstevanka:
+    def __init__(self, s, k):
+        self.s = s
+        self.k = k
+        self.indeks = -1
+
+    def __iter__(self):
+        return self
+
+    def __next__(self):
+        if len(self.s) == 0: raise StopIteration
+        else:
+            self.indeks = (self.indeks + self.k) % len(self.s)
+            return self.s.pop(self.indeks)
