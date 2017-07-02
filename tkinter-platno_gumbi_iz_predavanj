@@ -1,0 +1,35 @@
+# Z miÅ¡ko "vleÄemo" (dragging) element po Canvasu
+import tkinter
+
+class Krogec():
+    def __init__(self, master):
+        self.canvas = tkinter.Canvas(master, width=300, height=300)
+        self.canvas.pack()
+        for i in range(10):
+            self.canvas.create_line(0, 0, i * 10, 300)
+        self.krogec = self.canvas.create_oval(140,140,160,160, fill="red")
+        self.canvas.bind("<ButtonPress-1>", self.gumb_dol)
+        self.canvas.bind("<ButtonRelease-1>", self.gumb_gor)
+        self.canvas.bind("<Motion>", self.premik_miske)
+        self.krogec_premikamo = False
+
+    def gumb_dol(self, event):
+        # NaroÄimo se na premike miÅ¡ke
+        (x,y) = (event.x, event.y)
+        ids = self.canvas.find_overlapping(x-3,y-3,x+3,y+3)
+        print ("NaÅ¡li smo {0}, krogec = {1}".format(ids, self.krogec))
+        self.krogec_premikamo = (self.krogec in ids)
+
+    def gumb_gor(self, event):
+        # OdnaroÄimo se od premikov miÅ¡ke
+        self.krogec_premikamo = False
+
+    def premik_miske(self, event):
+        if self.krogec_premikamo:
+            (x, y) = (event.x, event.y)
+            self.canvas.coords(self.krogec, x-10, y-10, x+10, y+10)
+
+# Glavni program
+root = tkinter.Tk()
+app = Krogec(root)
+root.mainloop()
