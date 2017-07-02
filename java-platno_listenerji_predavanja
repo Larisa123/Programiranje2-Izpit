@@ -1,0 +1,102 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.swing.JPanel;
+
+/**
+ * PodroÄje za risanje Ärt.
+ * 
+ * @author andrej
+ *
+ */
+public class Platno extends JPanel implements MouseListener, MouseMotionListener {
+	
+	/**
+	 * Vse zakljuÄene lomljene Ärte, ki smo jih narisali do zdaj.
+	 */
+	private List<Lomljenka> vseCrte;
+
+	/**
+	 * Lomljena Ärta, ki jo trenutno riÅ¡emo ({@code null} Äe trenutno ne riÅ¡emo Ärte)
+	 */
+	private Lomljenka trenutnaCrta;
+	
+	public Platno() {
+		super(); // pokliÄi konstruktor nadrazreda
+		trenutnaCrta = null;
+		vseCrte = new ArrayList<Lomljenka>();
+		setBackground(Color.white);
+		addMouseListener(this);
+		addMouseMotionListener(this);
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		for (Lomljenka l : vseCrte) {
+			// float x;
+			// (int)x -- pretvori x v int
+			// RazredA y;
+			// (RazredB)y -- pretvori y v RazredB (to gre samo v primeru,
+			//               da je RazredA podrazred od RazredB, ali pa Äe
+			//               je y Å¾e RazredB).
+			l.narisi((Graphics2D)g);
+		}
+		if (trenutnaCrta != null) {
+			trenutnaCrta.narisi((Graphics2D)g);
+		}
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(640, 480);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (trenutnaCrta != null) {
+			// Uporabnik je spustil miÅ¡ko, torej smo konÄali z risnjem Ärte
+			vseCrte.add(trenutnaCrta);
+		}
+		trenutnaCrta = null;
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {		
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if (trenutnaCrta == null) {
+			// nimam trenutne Äte, zato jo naredimo
+			trenutnaCrta = new Lomljenka(e.getX(), e.getY());
+		} else {
+			// trenutno Ärto Å¾e imamo, zato ji dodamo toÄko
+			trenutnaCrta.dodajTocko(e.getX(), e.getY());
+		}
+		repaint();
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+	}
+}
