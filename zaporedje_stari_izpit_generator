@@ -1,0 +1,20 @@
+
+def zaporedje(niz):
+    yield niz
+    nov_niz = ""
+    
+    while True:
+        stevec = 0
+        katero_gledamo = niz[0]
+        for element in niz:
+            if element == katero_gledamo: stevec += 1
+            else:
+                nov_niz = nov_niz + str(stevec) + katero_gledamo
+                katero_gledamo = element # sedaj gledamo drugo stevilo
+                stevec = 1 # ponastavimo stevec - zdaj je 1 ker smo že na njem
+        niz = nov_niz + str(stevec) + katero_gledamo #to je zadnja stevilka
+        yield niz
+
+
+g = zaporedje("1")
+print([next(g) for x in range(10)])
