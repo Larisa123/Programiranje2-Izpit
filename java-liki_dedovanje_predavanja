@@ -1,0 +1,39 @@
+import math
+
+class Lik():
+    def __init__(self, x, y):
+        self.x = x # referenÄna toÄka x
+        self.y = y # referenÄna toÄka y
+
+    def premakni(self, dx, dy):
+        self.x += dx
+        self.y += dy
+
+# Krog je podrazred razreda Lik:
+# - Krog je *razÅ¡iritev* (nadgradnja) razreda Lik
+# - Krog *podeduje* metode od Lik
+# - Krog se zna obnaÅ¡ati kot Lik
+
+class Krog(Lik):
+    def __init__(self, x, y, r):
+        # tu pokliÄi se konstruktor od Lik
+        super().__init__(x,y)
+        self.r = r # polmer
+
+    def ploscina(self):
+        return math.pi * self.r * self.r
+
+class Kvadrat(Lik):
+    def __init__(self, x, y, a):
+        super().__init__(x, y)
+        self.a = a # velikost stranice
+
+    def ploscina(self):
+        return self.a * self.a
+
+class Tocka(Lik):
+    def __init__(self, x, y):
+        super().__init__(x,y)
+
+    def ploscina(self):
+        return 0
